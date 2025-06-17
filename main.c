@@ -2,11 +2,13 @@
 //Copyright (c) 2025 Trenser Technology Solutions
 //All Rights Reserved
 //*****************************************************************************
+//
 //File     : main.c
 //Summary  : Print "Hello World"
 //Note     : None
 //Author   : Drisya P
 //Date     : 17/Jun/2025
+//
 //*****************************************************************************
 
 //*********************Include Files*******************************************
@@ -33,3 +35,5 @@ int main()
 
     return 0;
 }
+
+//EOF
