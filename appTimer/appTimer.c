@@ -110,10 +110,10 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
     uint16  unYear        = 0u;
     uint8   ucMonthValue  = 0u;
 
-    uint8 ucDate[DATE_STR_LEN]={0}; 
-    uint8 ucTimePart[TIME_STR_LEN]={0};
-    uint8 ucAmPm[AM_PM_SIZE]={0};
-    uint8 ucMonth[SIZE]={0};
+    uint8 pDate[DATE_STR_LEN]={0}; 
+    uint8 pTimePart[TIME_STR_LEN]={0};
+    uint8 pAmPm[AM_PM_SIZE]={0};
+    uint8 pMonth[SIZE]={0};
 
     //check Inputs are valid or Not
     if(ucGmtHours > ZERO && ucGmtHours <= HOUR_24 && \
@@ -132,38 +132,38 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
         uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
         
         sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
-            ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
+            pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
         if (ucHour == ZERO) 
         {
             ucHour = HOUR_12;
-            strcpy((char*)ucAmPm, "AM");
+            strcpy((char*)pAmPm, "AM");
         }
         else if (ucHour < HOUR_12)
         {
-            strcpy((char*)ucAmPm, "AM");
+            strcpy((char*)pAmPm, "AM");
         }
         else if (ucHour == HOUR_12) 
         {
-            strcpy((char*)ucAmPm, "PM");
+            strcpy((char*)pAmPm, "PM");
         } 
         else 
         {
             ucHour -= HOUR_12;
-            strcpy((char*)ucAmPm, "PM");
+            strcpy((char*)pAmPm, "PM");
         }
 
-        sprintf((char*)ucTimePart, "%02d:%02d:%02d %s" , \
-                            ucHour, ucMin, ucSec,ucAmPm);
+        sprintf((char*)pTimePart, "%02d:%02d:%02d %s" , \
+                            ucHour, ucMin, ucSec,pAmPm);
 
-        ucMonthValue = AppTimerGetMonthValue(ucMonth);
+        ucMonthValue = AppTimerGetMonthValue(pMonth);
 
-        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
+        sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
         // Print results
-        printf("Time: %s\n", ucTimePart);
-        printf("Date: %s\n", ucDate);
+        printf("Time: %s\n", pTimePart);
+        printf("Date: %s\n", pDate);
         printf("epoch:%ld\n" ,EpochTime);
         printf("\n\n");
 
@@ -189,10 +189,10 @@ void AppTimerDisplayIST()
     uint16  unYear        = 0u;
     uint8   ucMonthValue  = 0u;
 
-    uint8 ucDate[DATE_STR_LEN]={0}; 
-    uint8 ucTimePart[TIME_STR_LEN]={0};
-    uint8 ucAmPm[AM_PM_SIZE]={0};
-    uint8 ucMonth[SIZE]={0};
+    uint8 pDate[DATE_STR_LEN]={0}; 
+    uint8 pTimePart[TIME_STR_LEN]={0};
+    uint8 pAmPm[AM_PM_SIZE]={0};
+    uint8 pMonth[SIZE]={0};
 
     printf("IST (5:30)\n-----------------\n");
     time_t currentTime = time(NULL);
@@ -203,37 +203,37 @@ void AppTimerDisplayIST()
     uint8 *ptimeStr =(uint8*) ctime(&currentTime);
         
     sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
-    ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
+                    pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
     // Convert to 12-hour format and set AM/PM
     if (ucHour == ZERO) 
     {
         ucHour = HOUR_12;
-        strcpy((char*)ucAmPm, "AM");
+        strcpy((char*)pAmPm, "AM");
     }
     else if (ucHour < HOUR_12)
     {
-        strcpy((char*)ucAmPm, "AM");
+        strcpy((char*)pAmPm, "AM");
     }
     else if (ucHour == HOUR_12) 
     {
-        strcpy((char*)ucAmPm, "PM");
+        strcpy((char*)pAmPm, "PM");
     } 
     else 
     {
         ucHour -= HOUR_12;
-        strcpy((char*)ucAmPm, "PM");
+        strcpy((char*)pAmPm, "PM");
     }
 
-    sprintf((char*)ucTimePart, "%02d:%02d:%02d %s" , ucHour, ucMin, ucSec,ucAmPm);
+    sprintf((char*)pTimePart, "%02d:%02d:%02d %s" , ucHour, ucMin, ucSec,pAmPm);
 
-    ucMonthValue = AppTimerGetMonthValue(ucMonth);
+    ucMonthValue = AppTimerGetMonthValue(pMonth);
 
-    sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
+    sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
     // Print results
-    printf("Time: %s\n", ucTimePart);
-    printf("Date: %s\n", ucDate);
+    printf("Time: %s\n", pTimePart);
+    printf("Date: %s\n", pDate);
     printf("\n\n");
 
     return;
@@ -256,10 +256,10 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
     uint16  unYear        = 0u;
     uint8   ucMonthValue  = 0u;
 
-    uint8 ucDate[DATE_STR_LEN]={0}; 
-    uint8 ucTimePart[TIME_STR_LEN]={0};
-    uint8 ucAmPm[AM_PM_SIZE]={0};
-    uint8 ucMonth[SIZE]={0};
+    uint8 pDate[DATE_STR_LEN]={0}; 
+    uint8 pTimePart[TIME_STR_LEN]={0};
+    uint8 pAmPm[AM_PM_SIZE]={0};
+    uint8 pMonth[SIZE]={0};
 
     if(PstHours > ZERO && PstHours <= HOUR_24 && \
         PstMinutes > ZERO && PstMinutes < MINUTES_60)
@@ -276,38 +276,38 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
         uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
             
         sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
-        ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
+                    pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
         if (ucHour == ZERO) 
         {
             ucHour = HOUR_12;
-            strcpy((char*)ucAmPm, "AM");
+            strcpy((char*)pAmPm, "AM");
         }
         else if (ucHour < HOUR_12)
         {
-            strcpy((char*)ucAmPm, "AM");
+            strcpy((char*)pAmPm, "AM");
         }
         else if (ucHour == HOUR_12) 
         {
-            strcpy((char*)ucAmPm, "PM");
+            strcpy((char*)pAmPm, "PM");
         } 
         else 
         {
             ucHour -= HOUR_12;
-            strcpy((char*)ucAmPm, "PM");
+            strcpy((char*)pAmPm, "PM");
         }
 
-        sprintf((char*)ucTimePart,"%02d:%02d:%02d %s" , \
-                            ucHour,ucMin,ucSec,ucAmPm); 
+        sprintf((char*)pTimePart,"%02d:%02d:%02d %s" , \
+                            ucHour,ucMin,ucSec,pAmPm); 
 
-        ucMonthValue = AppTimerGetMonthValue(ucMonth);
+        ucMonthValue = AppTimerGetMonthValue(pMonth);
 
-        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
+        sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
         // Print results
-        printf("Time: %s\n", ucTimePart);
-        printf("Date: %s\n", ucDate);
+        printf("Time: %s\n", pTimePart);
+        printf("Date: %s\n", pDate);
         
         blflag=TRUE;
     }
