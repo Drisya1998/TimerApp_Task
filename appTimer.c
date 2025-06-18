@@ -35,7 +35,7 @@
 //*****************************************************************************
 uint8 AppTimerGetMonthValue(uint8 ucmonth[])
 {
-    MONTH MonthValue;
+    MONTH MonthValue = 0;
 
     if(strcmp((char*)ucmonth, "Jan") == ZERO)
     {
