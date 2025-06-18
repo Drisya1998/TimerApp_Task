@@ -20,16 +20,21 @@ typedef unsigned char uint8;
 
 
 //***************************** Global Constants ******************************
-#define HOUR_12         12
-#define HOUR_24         24
-#define MINUTES_60      60
-#define TIME_STR_LEN    20
-#define DATE_STR_LEN    20
-#define AM_PM_SIZE      3
-#define SIZE            4
-#define TRUE            1
-#define FALSE           0
-#define ZERO            0
+#define HOUR_12             12
+#define HOUR_24             24
+#define MINUTES_60          60
+#define TIME_STR_LEN        20
+#define DATE_STR_LEN        20
+#define AM_PM_SIZE          3
+#define SIZE                4
+#define TRUE                1
+#define FALSE               0
+#define ZERO                0
+#define GMT_HOURS           5
+#define GMT_MINUTES         30
+#define PST_HOURS           13
+#define PST_MINUTES         30
+#define OFFSET              3600
 
 typedef enum { 
     MONTH_JAN=1, 

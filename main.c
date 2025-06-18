@@ -30,30 +30,30 @@
             //AppTimerDisplayPST functions
 //Inputs  : None
 //Outputs : None 
-//Return  : 0
+//Return  : ZERO
 //Notes   : None 
 //*****************************************************************************
 uint8 main()
 {
-    while(1)
+    while(TRUE)
     {
         //clear the screen
         printf("\x1b[H");
 
-        bool GmtResult = AppTimerDisplayGMT(5,30);
-        if(GmtResult ==  false)
+        bool blGmtResult = AppTimerDisplayGMT(GMT_HOURS,GMT_MINUTES);
+        if(blGmtResult ==  false)
         {
             printf("Invalid Input detected");
         }
         AppTimerDisplayIST();
-        bool PstResult = AppTimerDisplayPST(13,30);
-        if(PstResult ==  false)
+        bool blPstResult = AppTimerDisplayPST(PST_HOURS,PST_MINUTES);
+        if(blPstResult ==  false)
         {
             printf("Invalid Input detected");
         }
     }
 
-    return 0;
+    return ZERO;
 }
 
 //EOF

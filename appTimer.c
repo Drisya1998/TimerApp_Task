@@ -33,55 +33,55 @@
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
-uint8 AppTimerGetMonthValue(uint8 month[])
+uint8 AppTimerGetMonthValue(uint8 ucmonth[])
 {
     MONTH MonthValue;
 
-    if(strcmp((char*)month, "Jan") == ZERO)
+    if(strcmp((char*)ucmonth, "Jan") == ZERO)
     {
         MonthValue =  MONTH_JAN;
     }
-    else if(strcmp((char*)month, "Feb") == ZERO )
+    else if(strcmp((char*)ucmonth, "Feb") == ZERO )
     {
         MonthValue = MONTH_FEB;
     }
-    else if(strcmp((char*)month, "Mar") == ZERO)
+    else if(strcmp((char*)ucmonth, "Mar") == ZERO)
     {
         MonthValue = MONTH_MAR;
     }
-    else if(strcmp((char*)month, "Apr") == ZERO)
+    else if(strcmp((char*)ucmonth, "Apr") == ZERO)
     {
         MonthValue = MONTH_APR;
     }
-    else if(strcmp((char*)month, "May") == ZERO)
+    else if(strcmp((char*)ucmonth, "May") == ZERO)
     {
         MonthValue = MONTH_MAY;
     }
-    else if(strcmp((char*)month, "Jun") == ZERO)
+    else if(strcmp((char*)ucmonth, "Jun") == ZERO)
     {
         MonthValue = MONTH_JUN;
     }
-    else if(strcmp((char*)month, "Jul") == ZERO)
+    else if(strcmp((char*)ucmonth, "Jul") == ZERO)
     {
         MonthValue = MONTH_JUL;
     }
-    else if(strcmp((char*)month, "Aug") == ZERO)
+    else if(strcmp((char*)ucmonth, "Aug") == ZERO)
     {
         MonthValue = MONTH_AUG;
     }
-    else if(strcmp((char*)month, "Sep") == ZERO)
+    else if(strcmp((char*)ucmonth, "Sep") == ZERO)
     {
         MonthValue = MONTH_SEP;
     }
-    else if(strcmp((char*)month, "Oct") == ZERO)
+    else if(strcmp((char*)ucmonth, "Oct") == ZERO)
     {
         MonthValue = MONTH_OCT;
     }
-    else if(strcmp((char*)month, "Nov") == ZERO)
+    else if(strcmp((char*)ucmonth, "Nov") == ZERO)
     {
         MonthValue = MONTH_NOV;
     }
-    else if(strcmp((char*)month, "Dec") == ZERO)
+    else if(strcmp((char*)ucmonth, "Dec") == ZERO)
     {
         MonthValue = MONTH_DEC;
     }
@@ -107,7 +107,7 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
     uint8   ucHour        = (uint8)ZERO;
     uint8   ucMin         = (uint8)ZERO;
     uint8   ucSec         = (uint8)ZERO;
-    uint16  ucYear        = (uint16)ZERO;
+    uint16  unYear        = (uint16)ZERO;
     uint8   ucMonthValue  = (uint8)ZERO;
 
     uint8 ucDate[DATE_STR_LEN]; 
@@ -126,12 +126,13 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
         // get current time
         time(&currentTime);
 
-        time_t adjustTime = currentTime-(ucGmtHours * 3600+ucGmtMinutes * 60);
+        time_t adjustTime = currentTime - \
+                (ucGmtHours * OFFSET+ucGmtMinutes * MINUTES_60);
         // format: "Wed Jun 18 20:32:42 2025\n"
         uint8 *uctimeStr =(uint8*) ctime(&adjustTime);
         
         sscanf((char*)uctimeStr+SIZE, "%s %hhu %hhu:%hhu:%hhu %hu", \
-            ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &ucYear);
+            ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
         if (ucHour == ZERO) 
@@ -158,7 +159,7 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
 
         ucMonthValue = AppTimerGetMonthValue(ucMonth);
 
-        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, ucYear);
+        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
         // Print results
         printf("Time: %s\n", ucTimePart);
@@ -186,7 +187,7 @@ void AppTimerDisplayIST()
     uint8   ucHour        = (uint8)ZERO;
     uint8   ucMin         = (uint8)ZERO;
     uint8   ucSec         = (uint8)ZERO;
-    uint16  ucYear        = (uint16)ZERO;
+    uint16  unYear        = (uint16)ZERO;
     uint8   ucMonthValue  = (uint8)ZERO;
 
     uint8 ucDate[DATE_STR_LEN]; 
@@ -203,7 +204,7 @@ void AppTimerDisplayIST()
     uint8 *uctimeStr =(uint8*) ctime(&currentTime);
         
     sscanf((char*)uctimeStr+SIZE, "%s %hhu %hhu:%hhu:%hhu %hu", \
-    ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &ucYear);
+    ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
     // Convert to 12-hour format and set AM/PM
     if (ucHour == ZERO) 
@@ -229,7 +230,7 @@ void AppTimerDisplayIST()
 
     ucMonthValue = AppTimerGetMonthValue(ucMonth);
 
-    sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, ucYear);
+    sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
     // Print results
     printf("Time: %s\n", ucTimePart);
@@ -253,7 +254,7 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
     uint8   ucHour        = (uint8)ZERO;
     uint8   ucMin         = (uint8)ZERO;
     uint8   ucSec         = (uint8)ZERO;
-    uint16  ucYear        = (uint16)ZERO;
+    uint16  unYear        = (uint16)ZERO;
     uint8   ucMonthValue  = (uint8)ZERO;
 
     uint8 ucDate[DATE_STR_LEN]; 
@@ -269,13 +270,14 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
         // get current time
         time(&currentTime);
 
-        time_t adjustTime = currentTime - PstHours * 3600 + PstMinutes * 60;
+        time_t adjustTime = currentTime -  \
+                            PstHours * OFFSET + PstMinutes * MINUTES_60;
 
         // format: "Wed Jun 18 20:32:42 2025\n"
         uint8 *uctimeStr =(uint8*) ctime(&adjustTime);
             
         sscanf((char*)uctimeStr+SIZE, "%s %hhu %hhu:%hhu:%hhu %hu", \
-        ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &ucYear);
+        ucMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
         if (ucHour == ZERO) 
@@ -302,7 +304,7 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
 
         ucMonthValue = AppTimerGetMonthValue(ucMonth);
 
-        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, ucYear);
+        sprintf((char*)ucDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
         // Print results
         printf("Time: %s\n", ucTimePart);
