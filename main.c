@@ -40,17 +40,26 @@ uint8 main()
         //clear the screen
         printf("\x1b[H");
 
-        bool blGmtResult = AppTimerDisplayGMT(GMT_HOURS,GMT_MINUTES);
-        if(blGmtResult ==  false)
+        bool blResult = FALSE;
+
+        blResult = AppTimerDisplay("GMT",GMT_HOURS , GMT_MINUTES);
+        if(blResult ==  FALSE)
         {
             printf("Invalid Input detected");
         }
-        AppTimerDisplayIST();
-        bool blPstResult = AppTimerDisplayPST(PST_HOURS,PST_MINUTES);
-        if(blPstResult ==  false)
+
+        blResult = AppTimerDisplay("IST",IST_HOURS , IST_MINUTES);
+        if(blResult ==  FALSE)
         {
             printf("Invalid Input detected");
         }
+
+        blResult = AppTimerDisplay("PST",PST_HOURS , PST_MINUTES);
+        if(blResult ==  FALSE)
+        {
+            printf("Invalid Input detected");
+        }
+        
     }
 
     return ZERO;

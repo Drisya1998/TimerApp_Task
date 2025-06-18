@@ -30,10 +30,12 @@ typedef unsigned char uint8;
 #define TRUE                1
 #define FALSE               0
 #define ZERO                0
-#define GMT_HOURS           5
+#define GMT_HOURS           6
 #define GMT_MINUTES         30
 #define PST_HOURS           13
 #define PST_MINUTES         30
+#define IST_HOURS           0
+#define IST_MINUTES         0
 #define OFFSET              3600
 
 typedef enum { 
@@ -55,10 +57,8 @@ typedef enum {
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-bool AppTimerDisplayGMT(uint8 , uint8);
-void AppTimerDisplayIST();
-bool AppTimerDisplayPST(int , int);
-uint8 AppTimerGetMonthValue(uint8[]);
+uint8 AppTimerGetMonthValue(uint8*);
+bool AppTimerDisplay(uint8* , uint8 , uint8);
 
 //*********************** Inline Method Implementations ***********************
 

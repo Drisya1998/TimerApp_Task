@@ -92,16 +92,18 @@ uint8 AppTimerGetMonthValue(uint8* pmonth)
     return MonthValue;
 }
 
-//*********************.AppTimerDisplayGMT.***********************************
-//Purpose : print GMT zone time,date, epoch
-//Inputs  : uint8 GmtHours,uint8 GmtMinutes
+
+//*********************.AppTimerDisplay.************************************
+//Purpose : print GMT , IST  and PST zone time,date
+//Inputs  : uint8* string represents GMT , IST  or PST ,
+            //uint8 GmtHours or IstHours or PstHours  , 
+            //uint8 GmtMinutes or IstMinutes or PstMinutes
 //Outputs : None
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
-bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
+bool AppTimerDisplay(uint8* pzone , uint8 ucOffsetHours , uint8 ucOffsetMinutes)
 {
-
     bool    blflag        = FALSE;
     uint8   ucDay         = 0u;
     uint8   ucHour        = 0u;
@@ -128,177 +130,19 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
     (void*)pAmPm;
     (void*)pMonth;
 
-    //check Inputs are valid or Not
-    if(ucGmtHours > ZERO && ucGmtHours <= HOUR_24 && \
-        ucGmtMinutes > ZERO && ucGmtMinutes < MINUTES_60)
+    if(ucOffsetHours >= ZERO && ucOffsetHours <= HOUR_24 && \
+        ucOffsetMinutes >= ZERO && ucOffsetMinutes <= MINUTES_60)
     {
-        printf("\n\n\nUTC (0:00)\n-----------------\n");
-
+        
         time_t currentTime = time(NULL);
         time_t EpochTime= currentTime;
         // get current time
         time(&currentTime);
 
-        time_t adjustTime = currentTime - \
-                (ucGmtHours * OFFSET+ucGmtMinutes * MINUTES_60);
-        // format: "Wed Jun 18 20:32:42 2025\n"
-        uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
-        
-        sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
-            pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
-
-        // Convert to 12-hour format and set AM/PM
-        if (ucHour == ZERO) 
-        {
-            ucHour = HOUR_12;
-            strcpy((char*)pAmPm, "AM");
-        }
-        else if (ucHour < HOUR_12)
-        {
-            strcpy((char*)pAmPm, "AM");
-        }
-        else if (ucHour == HOUR_12) 
-        {
-            strcpy((char*)pAmPm, "PM");
-        } 
-        else 
-        {
-            ucHour -= HOUR_12;
-            strcpy((char*)pAmPm, "PM");
-        }
-
-        sprintf((char*)pTimePart, "%02d:%02d:%02d %s" , \
-                            ucHour, ucMin, ucSec,pAmPm);
-
-        ucMonthValue = AppTimerGetMonthValue(pMonth);
-
-        sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
-
-        // Print results
-        printf("Time: %s\n", pTimePart);
-        printf("Date: %s\n", pDate);
-        printf("epoch:%ld\n" ,EpochTime);
-        printf("\n\n");
-
-        blflag= TRUE;
-    }
-
-    return blflag;
-}
-
-//*********************.AppTimerDisplayIST.***********************************
-//Purpose : print IST zone time,date
-//Inputs  : None
-//Outputs : None
-//Return  : None
-//Notes   : None 
-//*****************************************************************************
-void AppTimerDisplayIST()
-{
-    uint8   ucDay         = 0u;
-    uint8   ucHour        = 0u;
-    uint8   ucMin         = 0u;
-    uint8   ucSec         = 0u;
-    uint16  unYear        = 0u;
-    uint8   ucMonthValue  = 0u;
-
-    uint8 pDate[DATE_STR_LEN]={0}; 
-    uint8 pTimePart[TIME_STR_LEN]={0};
-    uint8 pAmPm[AM_PM_SIZE]={0};
-    uint8 pMonth[SIZE]={0};
-
-    printf("IST (5:30)\n-----------------\n");
-    time_t currentTime = time(NULL);
-    // get current time
-    time(&currentTime);
-
-    // format: "Wed Jun 18 20:32:42 2025\n"
-    uint8 *ptimeStr =(uint8*) ctime(&currentTime);
-        
-    sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
-                    pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
-
-    // Convert to 12-hour format and set AM/PM
-    if (ucHour == ZERO) 
-    {
-        ucHour = HOUR_12;
-        strcpy((char*)pAmPm, "AM");
-    }
-    else if (ucHour < HOUR_12)
-    {
-        strcpy((char*)pAmPm, "AM");
-    }
-    else if (ucHour == HOUR_12) 
-    {
-        strcpy((char*)pAmPm, "PM");
-    } 
-    else 
-    {
-        ucHour -= HOUR_12;
-        strcpy((char*)pAmPm, "PM");
-    }
-
-    sprintf((char*)pTimePart, "%02d:%02d:%02d %s" , ucHour, ucMin, ucSec,pAmPm);
-
-    ucMonthValue = AppTimerGetMonthValue(pMonth);
-
-    sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
-
-    // Print results
-    printf("Time: %s\n", pTimePart);
-    printf("Date: %s\n", pDate);
-    printf("\n\n");
-
-    return;
-}
-
-//*********************.ApptimerDisplayPST.************************************
-//Purpose : print PST zone time,date
-//Inputs  : uint8 PstHours , uint8 PstMinutes
-//Outputs : None
-//Return  : None
-//Notes   : None 
-//*****************************************************************************
-bool AppTimerDisplayPST(int PstHours,int PstMinutes)
-{
-    bool    blflag        = FALSE;
-    uint8   ucDay         = 0u;
-    uint8   ucHour        = 0u;
-    uint8   ucMin         = 0u;
-    uint8   ucSec         = 0u;
-    uint16  unYear        = 0u;
-    uint8   ucMonthValue  = 0u;
-
-    uint8 pDate[DATE_STR_LEN]={0}; 
-    uint8 pTimePart[TIME_STR_LEN]={0};
-    uint8 pAmPm[AM_PM_SIZE]={0};
-    uint8 pMonth[SIZE]={0};
-
-    //To Avoid Static Analysis Violations
-    (void)ucDay;
-    (void)ucHour;
-    (void)ucMin;
-    (void)ucSec;
-    (void)unYear;
-    (void)ucMonthValue;
-
-    (void*)pDate;
-    (void*)pTimePart;
-    (void*)pAmPm;
-    (void*)pMonth;
-
-    if(PstHours > ZERO && PstHours <= HOUR_24 && \
-        PstMinutes > ZERO && PstMinutes < MINUTES_60)
-    {
-        printf("PST (-8:00)\n-----------------\n");
-        time_t currentTime = time(NULL);
-        // get current time
-        time(&currentTime);
-
         time_t adjustTime = currentTime -  \
-                            PstHours * OFFSET + PstMinutes * MINUTES_60;
+                        ucOffsetHours * OFFSET + ucOffsetMinutes * MINUTES_60;
 
-        // format: "Wed Jun 18 20:32:42 2025\n"
+        // format: "Wed Jun DD HH:MM:SS YYYY\n"
         uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
             
         sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
@@ -331,10 +175,29 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
 
         sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
 
-        // Print results
-        printf("Time: %s\n", pTimePart);
-        printf("Date: %s\n", pDate);
-        
+        //Print Result according to GMT , IST , Or PST
+        if(strcmp((char*)pzone,"GMT") == ZERO)
+        {
+            printf("\n\n\nUTC (0:00)\n-----------------\n");
+            printf("Time: %s\n", pTimePart);
+            printf("Date: %s\n", pDate);
+            printf("epoch:%ld\n" ,EpochTime);
+            printf("\n\n");
+        }
+        else if(strcmp((char*)pzone,"IST")==ZERO)
+        {
+            printf("IST (5:30)\n-----------------\n");
+            printf("Time: %s\n", pTimePart);
+            printf("Date: %s\n", pDate);
+            printf("\n\n");
+        }
+        else
+        {
+            printf("PST (-8:00)\n-----------------\n");
+            printf("Time: %s\n", pTimePart);
+            printf("Date: %s\n", pDate);
+            printf("\n\n");
+        }
         blflag=TRUE;
     }
     
