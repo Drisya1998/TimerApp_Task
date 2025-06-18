@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "appTimer.h"
+#include "appTimer/appTimer.h"
 
 //*********************Local Types*********************************************
 
