@@ -115,6 +115,19 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
     uint8 pAmPm[AM_PM_SIZE]={0};
     uint8 pMonth[SIZE]={0};
 
+    //To Avoid Static Analysis Violations
+    (void)ucDay;
+    (void)ucHour;
+    (void)ucMin;
+    (void)ucSec;
+    (void)unYear;
+    (void)ucMonthValue;
+
+    (void*)pDate;
+    (void*)pTimePart;
+    (void*)pAmPm;
+    (void*)pMonth;
+
     //check Inputs are valid or Not
     if(ucGmtHours > ZERO && ucGmtHours <= HOUR_24 && \
         ucGmtMinutes > ZERO && ucGmtMinutes < MINUTES_60)
@@ -131,7 +144,7 @@ bool AppTimerDisplayGMT(uint8 ucGmtHours , uint8 ucGmtMinutes)
         // format: "Wed Jun 18 20:32:42 2025\n"
         uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
         
-        sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
+        sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
             pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
@@ -202,7 +215,7 @@ void AppTimerDisplayIST()
     // format: "Wed Jun 18 20:32:42 2025\n"
     uint8 *ptimeStr =(uint8*) ctime(&currentTime);
         
-    sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
+    sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
                     pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
     // Convert to 12-hour format and set AM/PM
@@ -261,6 +274,19 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
     uint8 pAmPm[AM_PM_SIZE]={0};
     uint8 pMonth[SIZE]={0};
 
+    //To Avoid Static Analysis Violations
+    (void)ucDay;
+    (void)ucHour;
+    (void)ucMin;
+    (void)ucSec;
+    (void)unYear;
+    (void)ucMonthValue;
+
+    (void*)pDate;
+    (void*)pTimePart;
+    (void*)pAmPm;
+    (void*)pMonth;
+
     if(PstHours > ZERO && PstHours <= HOUR_24 && \
         PstMinutes > ZERO && PstMinutes < MINUTES_60)
     {
@@ -275,7 +301,7 @@ bool AppTimerDisplayPST(int PstHours,int PstMinutes)
         // format: "Wed Jun 18 20:32:42 2025\n"
         uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
             
-        sscanf((char*)ptimeStr+SIZE, "%9s %hhu %hhu:%hhu:%hhu %hu", \
+        sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
                     pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
 
         // Convert to 12-hour format and set AM/PM
