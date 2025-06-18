@@ -130,8 +130,7 @@ bool AppTimerDisplay(uint8* pzone , uint8 ucOffsetHours , uint8 ucOffsetMinutes)
     (void*)pAmPm;
     (void*)pMonth;
 
-    if(ucOffsetHours >= ZERO && ucOffsetHours <= HOUR_24 && \
-        ucOffsetMinutes >= ZERO && ucOffsetMinutes <= MINUTES_60)
+    if(ucOffsetHours <= HOUR_24 && ucOffsetMinutes <= MINUTES_60)
     {
         
         time_t currentTime = time(NULL);
