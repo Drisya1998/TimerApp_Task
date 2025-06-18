@@ -14,7 +14,6 @@
 //*********************Include Files*******************************************
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 #include <stdbool.h>
 #include "appTimer.h"
 
@@ -52,8 +51,6 @@ uint8 main()
         {
             printf("Invalid Input detected");
         }
-
-        Sleep(1);
     }
 
     return 0;
