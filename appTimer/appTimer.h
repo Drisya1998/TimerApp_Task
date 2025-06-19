@@ -3,10 +3,10 @@
 // All Rights Reserved 
 //***************************************************************************** 
 // 
-// Summary : appTimer header File
-// Note    : Added Macros and function Declaraions of AppTimerDisplay and 
-//           ApptimerGetMonthValue
-//
+// Summary : appTimer header File - Added Macros and function Declaraions of 
+//           AppTimerDisplay,ApptimerGetMonthValue,AppTimerConvertToHourFormat,
+//           AppTimerPrintToConsole
+// Note    :
 //*****************************************************************************
 
 #ifndef _APP_TIMER_H_ 
