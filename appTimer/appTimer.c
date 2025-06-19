@@ -118,6 +118,7 @@ bool AppTimerDisplay(uint8* pzone , uint8 ucOffsetHours , uint8 ucOffsetMinutes)
     uint8 *ptimeStr = NULL;
 
     //To Avoid Static Analysis Violations
+    (void)lladjustTime;
     (void*)pucDate;
     (void*)pucTimePart;
     (void*)pucAmPm;
