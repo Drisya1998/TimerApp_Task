@@ -38,9 +38,12 @@
 bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
 {
     bool blflag=FALSE;
-    static const uint8* const pucmonth_names[] = {
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    static const int8* const pucmonth_names[] = {
+    (const int8*)JAN, (const int8*)FEB, (const int8*)MAR, 
+    (const int8*)APR,(const int8*)MAY, (const int8*)JUN, 
+    (const int8*)JUL, (const int8*)AUG,(const int8*)SEP, 
+    (const int8*)OCT, (const int8*)NOV, (const int8*)DEC};
+
     if(pucmonth != NULL )
     {
         for(int i = ZERO; i < NUMBER_MONTHS; ++i)
@@ -148,10 +151,10 @@ bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
 
     //To Avoid Static Analysis Violations
     (void)lladjustTime;
-    (void*)pucDate;
-    (void*)pucTimePart;
-    (void*)pucAmPm;
-    (void*)pucMonth;
+    (void)pucDate;
+    (void)pucTimePart;
+    (void)pucAmPm;
+    (void)pucMonth;
 
     if((ucOffsetHours <= HOUR_24) && (ucOffsetMinutes <= MINUTES_60))
     {

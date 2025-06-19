@@ -39,6 +39,18 @@
 #define AM                  "AM"
 #define PM                  "PM"
 #define NUMBER_MONTHS       12
+#define JAN                 "Jan"
+#define FEB                 "Feb"
+#define MAR                 "Mar"
+#define APR                 "Apr"
+#define MAY                 "May"
+#define JUN                 "Jun"
+#define JUL                 "Jul"
+#define AUG                 "Aug"
+#define SEP                 "Sep"
+#define OCT                 "Oct"
+#define NOV                 "Nov"
+#define DEC                 "Dec"
 
 typedef struct _TIMER_
 {
