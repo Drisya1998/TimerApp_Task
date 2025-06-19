@@ -135,7 +135,6 @@ void AppTimerPrintToConsole(uint8* pzone, uint8* pucTimePart, uint8* pucDate,
 bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
 {
     bool blflag = FALSE;
-    bool blreturnflag = FALSE;
     uint8 pucDate[DATE_STR_LEN] = {0}; 
     uint8 pucTimePart[TIME_STR_LEN] = {0};
     uint8 pucAmPm[AM_PM_SIZE] = {0};
