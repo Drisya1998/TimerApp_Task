@@ -1,10 +1,11 @@
-//**************************** appTimer ****************************** 
+//**************************** appTimer *************************************** 
 // Copyright (c) 2025 Trenser Technology Solutions
 // All Rights Reserved 
 //***************************************************************************** 
 // 
 // Summary : appTimer header File
-// Note    : Added Macros and function Declaraions
+// Note    : Added Macros and function Declaraions of AppTimerDisplay and 
+//           ApptimerGetMonthValue
 //
 //*****************************************************************************
 
@@ -37,21 +38,6 @@
 #define AM                  "AM"
 #define PM                  "PM"
 
-typedef enum { 
-    MONTH_JAN=1, 
-    MONTH_FEB,
-    MONTH_MAR,
-    MONTH_APR, 
-    MONTH_MAY,
-    MONTH_JUN,
-    MONTH_JUL, 
-    MONTH_AUG,
-    MONTH_SEP,
-    MONTH_OCT, 
-    MONTH_NOV,
-    MONTH_DEC, 
-} MONTH;
-
 typedef struct _TIMER_
 {
     uint8 ucHour;
@@ -61,13 +47,12 @@ typedef struct _TIMER_
     uint8 ucMonthValue;
     uint16 unYear;
 }TIMER;
-
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-uint8 AppTimerGetMonthValue(uint8*);
+bool AppTimerGetMonthValue(uint8*, uint8*);
 bool AppTimerDisplay(uint8*, uint8, uint8);
-
+void AppTimerConvertToHourFormat(uint8*, uint8*);
 //*********************** Inline Method Implementations ***********************
 
 #endif // _APP_TIMER_H_ 

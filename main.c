@@ -4,7 +4,8 @@
 //*****************************************************************************
 //
 //File     : main.c
-//Summary  : Call the DisplayGMT , DisplayIST , DisplayPST functions 
+//Summary  : Call the functionsfor DisplayGMT , DisplayIST , DisplayPST,
+//           clear the console 
 //Note     : None
 //Author   : Drisya P
 //Date     : 17/Jun/2025
@@ -28,7 +29,7 @@
 
 //*********************.main.**************************************************
 //Purpose : Call the AppTimerDisplayGMT , AppTimerDisplayIST , 
-            //AppTimerDisplayPST functions
+//          AppTimerDisplayPST functions
 //Inputs  : None
 //Outputs : None 
 //Return  : 0 - exit success- send status code to OS
@@ -36,24 +37,23 @@
 //*****************************************************************************
 int main()
 {
+    bool blResult = FALSE;
     while(TRUE)
     {
-        bool blResult = FALSE;
-
         clearConsole();
-        blResult = AppTimerDisplay(GMT, GMT_HOURS, GMT_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)GMT, GMT_HOURS, GMT_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in GMT failed");
         }
 
-        blResult = AppTimerDisplay(IST, IST_HOURS, IST_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)IST, IST_HOURS, IST_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in IST failed");
         }
 
-        blResult = AppTimerDisplay(PST, PST_HOURS, PST_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)PST, PST_HOURS, PST_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in PST failed");
