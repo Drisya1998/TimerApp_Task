@@ -35,27 +35,27 @@
 //Return  : exit status success or Failure
 //Notes   : None 
 //*****************************************************************************
-bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
+bool AppTimerGetMonthValue(uint8* pucMonth, uint8* pucMonthValue)
 {
-    bool blflag=FALSE;
-    static const int8* const pucmonth_names[] = {
+    bool blFlag=FALSE;
+    static const int8* const pucMonthNames[] = {
     (const int8*)JAN, (const int8*)FEB, (const int8*)MAR, 
     (const int8*)APR,(const int8*)MAY, (const int8*)JUN, 
     (const int8*)JUL, (const int8*)AUG,(const int8*)SEP, 
     (const int8*)OCT, (const int8*)NOV, (const int8*)DEC};
 
-    if(pucmonth != NULL )
+    if(pucMonth != NULL )
     {
         for(int i = ZERO; i < NUMBER_MONTHS; ++i)
         {
-            if(strcmp((const char*)pucmonth,(char*)pucmonth_names[i]) == ZERO){
+            if(strcmp((const char*)pucMonth,(char*)pucMonthNames[i]) == ZERO){
                 *pucMonthValue =i+ONE;
             }
         }
-        blflag = TRUE;
+        blFlag = TRUE;
     }
     
-    return blflag;
+    return blFlag;
 }
 
 //*********************.AppTimerConvertToHourFormat.***************************
@@ -97,10 +97,10 @@ void AppTimerConvertToHourFormat(uint8* pucHour, uint8* pucAmPm)
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
-void AppTimerPrintToConsole(uint8* pzone, uint8* pucTimePart, uint8* pucDate,
+void AppTimerPrintToConsole(uint8* pZone, uint8* pucTimePart, uint8* pucDate,
                              time_t llEpochTime)
 {
-    if(strcmp((char*)pzone,GMT) == ZERO)
+    if(strcmp((char*)pZone,GMT) == ZERO)
     {
         printf("\n\n\nUTC (0:00)\n-----------------\n");
         printf("Time: %s\n", pucTimePart);
@@ -108,7 +108,7 @@ void AppTimerPrintToConsole(uint8* pzone, uint8* pucTimePart, uint8* pucDate,
         printf("epoch:%lld\n", llEpochTime);
         printf("\n\n");
     }
-    else if(strcmp((char*)pzone,IST)==ZERO)
+    else if(strcmp((char*)pZone,IST)==ZERO)
     {
         printf("IST (5:30)\n-----------------\n");
         printf("Time: %s\n", pucTimePart);
@@ -135,22 +135,22 @@ void AppTimerPrintToConsole(uint8* pzone, uint8* pucTimePart, uint8* pucDate,
 //Return  : Exit status succes or Failure
 //Notes   : None 
 //*****************************************************************************
-bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
+bool AppTimerDisplay(uint8* pZone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
 {
-    bool blflag = FALSE;
+    bool blFlag = FALSE;
     uint8 pucDate[DATE_STR_LEN] = {0}; 
     uint8 pucTimePart[TIME_STR_LEN] = {0};
     uint8 pucAmPm[AM_PM_SIZE] = {0};
     uint8 pucMonth[MONTH_SIZE] = {0};
-    time_t llcurrentTime = time(NULL);
+    time_t llCurrentTime = time(NULL);
     time_t llEpochTime = time(NULL);
-    time_t lladjustTime = time(NULL);
-    TIMER sttimer = {0,0,0,0,0,0};
+    time_t llAdjustTime = time(NULL);
+    TIMER stTimer = {0,0,0,0,0,0};
 
-    uint8 *ptimeStr = NULL;
+    uint8 *pTimeStr = NULL;
 
     //To Avoid Static Analysis Violations
-    (void)lladjustTime;
+    (void)llAdjustTime;
     (void)pucDate;
     (void)pucTimePart;
     (void)pucAmPm;
@@ -159,32 +159,32 @@ bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
     if((ucOffsetHours <= HOUR_24) && (ucOffsetMinutes <= MINUTES_60))
     {
         // get current time
-        time(&llcurrentTime);
-        lladjustTime = llcurrentTime -  \
+        time(&llCurrentTime);
+        llAdjustTime = llCurrentTime -  \
             ((ucOffsetHours * SECONDS_HOUR) + (ucOffsetMinutes * MINUTES_60));
 
-        ptimeStr =(uint8*) ctime(&lladjustTime);
+        pTimeStr =(uint8*) ctime(&llAdjustTime);
 
-        sscanf((char*)ptimeStr+MONTH_SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
-                    pucMonth, &sttimer.ucDay, &sttimer.ucHour, \
-                    &sttimer.ucMin, &sttimer.ucSec, &sttimer.unYear);
+        sscanf((char*)pTimeStr+MONTH_SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
+                    pucMonth, &stTimer.ucDay, &stTimer.ucHour, \
+                    &stTimer.ucMin, &stTimer.ucSec, &stTimer.unYear);
 
-        AppTimerConvertToHourFormat(&sttimer.ucHour , pucAmPm);
+        AppTimerConvertToHourFormat(&stTimer.ucHour , pucAmPm);
 
         sprintf((char*)pucTimePart,"%02d:%02d:%02d %s" , \
-                        sttimer.ucHour,sttimer.ucMin,sttimer.ucSec,pucAmPm);
+                        stTimer.ucHour,stTimer.ucMin,stTimer.ucSec,pucAmPm);
 
-        if(AppTimerGetMonthValue(pucMonth , &sttimer.ucMonthValue))
+        if(AppTimerGetMonthValue(pucMonth , &stTimer.ucMonthValue))
         {
             sprintf((char*)pucDate, "%02d/%02d/%d", \
-                    sttimer.ucDay, sttimer.ucMonthValue, sttimer.unYear);
+                    stTimer.ucDay, stTimer.ucMonthValue, stTimer.unYear);
         }
         //Print Result according to GMT , IST , Or PST
-        AppTimerPrintToConsole(pzone, pucTimePart, pucDate, llEpochTime);
-        blflag=TRUE;
+        AppTimerPrintToConsole(pZone, pucTimePart, pucDate, llEpochTime);
+        blFlag=TRUE;
     }
     
-    return blflag;
+    return blFlag;
 }
 
 //EOF
