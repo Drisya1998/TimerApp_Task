@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "appTimer.h"
+#include "common.h"
 
 //*********************Local Types*********************************************
 
@@ -104,97 +105,84 @@ uint8 AppTimerGetMonthValue(uint8* pmonth)
 //*****************************************************************************
 bool AppTimerDisplay(uint8* pzone , uint8 ucOffsetHours , uint8 ucOffsetMinutes)
 {
-    bool    blflag        = FALSE;
-    uint8   ucDay         = 0u;
-    uint8   ucHour        = 0u;
-    uint8   ucMin         = 0u;
-    uint8   ucSec         = 0u;
-    uint16  unYear        = 0u;
-    uint8   ucMonthValue  = 0u;
+    bool blflag = FALSE;
+    uint8 pucDate[DATE_STR_LEN] = {0}; 
+    uint8 pucTimePart[TIME_STR_LEN] = {0};
+    uint8 pucAmPm[AM_PM_SIZE] = {0};
+    uint8 pucMonth[MONTH_SIZE] = {0};
+    time_t llcurrentTime = time(NULL);
+    time_t llEpochTime = time(NULL);
+    time_t lladjustTime = time(NULL);
+    TIMER sttimer = {0,0,0,0,0,0};
 
-    uint8 pDate[DATE_STR_LEN]={0}; 
-    uint8 pTimePart[TIME_STR_LEN]={0};
-    uint8 pAmPm[AM_PM_SIZE]={0};
-    uint8 pMonth[SIZE]={0};
+    uint8 *ptimeStr = NULL;
 
     //To Avoid Static Analysis Violations
-    (void)ucDay;
-    (void)ucHour;
-    (void)ucMin;
-    (void)ucSec;
-    (void)unYear;
-    (void)ucMonthValue;
+    (void*)pucDate;
+    (void*)pucTimePart;
+    (void*)pucAmPm;
+    (void*)pucMonth;
 
-    (void*)pDate;
-    (void*)pTimePart;
-    (void*)pAmPm;
-    (void*)pMonth;
-
-    if(ucOffsetHours <= HOUR_24 && ucOffsetMinutes <= MINUTES_60)
+    if((ucOffsetHours <= HOUR_24) && (ucOffsetMinutes <= MINUTES_60))
     {
-        
-        time_t currentTime = time(NULL);
-        time_t EpochTime= currentTime;
         // get current time
-        time(&currentTime);
-
-        time_t adjustTime = currentTime -  \
-                        ucOffsetHours * OFFSET + ucOffsetMinutes * MINUTES_60;
+        time(&llcurrentTime);
+        lladjustTime = llcurrentTime -  \
+            ((ucOffsetHours * SECONDS_HOUR) + (ucOffsetMinutes * MINUTES_60));
 
         // format: "Wed Jun DD HH:MM:SS YYYY\n"
-        uint8 *ptimeStr =(uint8*) ctime(&adjustTime);
-            
-        sscanf((char*)ptimeStr+SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
-                    pMonth, &ucDay, &ucHour, &ucMin, &ucSec, &unYear);
+        ptimeStr =(uint8*) ctime(&lladjustTime); 
+        sscanf((char*)ptimeStr+MONTH_SIZE, "%3s %hhu %hhu:%hhu:%hhu %hu", \
+                    pucMonth, &sttimer.ucDay, &sttimer.ucHour, \
+                    &sttimer.ucMin, &sttimer.ucSec, &sttimer.unYear);
 
         // Convert to 12-hour format and set AM/PM
-        if (ucHour == ZERO) 
+        if (sttimer.ucHour == ZERO) 
         {
-            ucHour = HOUR_12;
-            strcpy((char*)pAmPm, "AM");
+            sttimer.ucHour = HOUR_12;
+            strcpy((char*)pucAmPm, AM);
         }
-        else if (ucHour < HOUR_12)
+        else if (sttimer.ucHour < HOUR_12)
         {
-            strcpy((char*)pAmPm, "AM");
+            strcpy((char*)pucAmPm, AM);
         }
-        else if (ucHour == HOUR_12) 
+        else if (sttimer.ucHour == HOUR_12) 
         {
-            strcpy((char*)pAmPm, "PM");
+            strcpy((char*)pucAmPm, PM);
         } 
         else 
         {
-            ucHour -= HOUR_12;
-            strcpy((char*)pAmPm, "PM");
+            sttimer.ucHour -= HOUR_12;
+            strcpy((char*)pucAmPm, PM);
         }
 
-        sprintf((char*)pTimePart,"%02d:%02d:%02d %s" , \
-                            ucHour,ucMin,ucSec,pAmPm); 
-
-        ucMonthValue = AppTimerGetMonthValue(pMonth);
-
-        sprintf((char*)pDate, "%02d/%02d/%d", ucDay, ucMonthValue, unYear);
+        sprintf((char*)pucTimePart,"%02d:%02d:%02d %s" , \
+                            sttimer.ucHour,sttimer.ucMin,sttimer.ucSec,pucAmPm); 
+        sttimer.ucMonthValue = AppTimerGetMonthValue(pucMonth);
+        sprintf((char*)pucDate, "%02d/%02d/%d", \
+                        sttimer.ucDay, sttimer.ucMonthValue, sttimer.unYear);
 
         //Print Result according to GMT , IST , Or PST
-        if(strcmp((char*)pzone,"GMT") == ZERO)
+        if(strcmp((char*)pzone,GMT) == ZERO)
         {
             printf("\n\n\nUTC (0:00)\n-----------------\n");
-            printf("Time: %s\n", pTimePart);
-            printf("Date: %s\n", pDate);
-            printf("epoch:%ld\n" ,EpochTime);
+            printf("Time: %s\n", pucTimePart);
+            printf("Date: %s\n", pucDate);
+            printf("epoch:%ld\n", llEpochTime);
             printf("\n\n");
         }
-        else if(strcmp((char*)pzone,"IST")==ZERO)
+        else if(strcmp((char*)pzone,IST)==ZERO)
         {
             printf("IST (5:30)\n-----------------\n");
-            printf("Time: %s\n", pTimePart);
-            printf("Date: %s\n", pDate);
+            printf("Time: %s\n", pucTimePart);
+            printf("Date: %s\n", pucDate);
             printf("\n\n");
         }
         else
         {
             printf("PST (-8:00)\n-----------------\n");
-            printf("Time: %s\n", pTimePart);
-            printf("Date: %s\n", pDate);
+            printf("Time: %s\n", pucTimePart);
+            printf("Date: %s\n", pucDate);
             printf("\n\n");
         }
         blflag=TRUE;

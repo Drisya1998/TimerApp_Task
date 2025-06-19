@@ -1,10 +1,10 @@
 //**************************** appTimer ****************************** 
-// Copyright (c) 2021 Trenser 
+// Copyright (c) 2025 Trenser Technology Solutions
 // All Rights Reserved 
 //***************************************************************************** 
 // 
 // Summary : appTimer header File
-// Note : 
+// Note    : Added Macros and function Declaraions
 //
 //*****************************************************************************
 
@@ -12,12 +12,9 @@
 #define _APP_TIMER_H_ 
 
 //******************************* Include Files *******************************
+#include "common.h"
 
 //******************************* Global Types ********************************
-typedef unsigned short uint16;
-typedef signed char int8;
-typedef unsigned char uint8;
-
 
 //***************************** Global Constants ******************************
 #define HOUR_12             12
@@ -26,17 +23,19 @@ typedef unsigned char uint8;
 #define TIME_STR_LEN        20
 #define DATE_STR_LEN        20
 #define AM_PM_SIZE          3
-#define SIZE                4
+#define MONTH_SIZE          4
 #define TRUE                1
 #define FALSE               0
 #define ZERO                0
-#define GMT_HOURS           6
+#define GMT_HOURS           5
 #define GMT_MINUTES         30
-#define PST_HOURS           13
+#define PST_HOURS           12
 #define PST_MINUTES         30
 #define IST_HOURS           0
 #define IST_MINUTES         0
-#define OFFSET              3600
+#define SECONDS_HOUR        3600
+#define AM                  "AM"
+#define PM                  "PM"
 
 typedef enum { 
     MONTH_JAN=1, 
@@ -51,14 +50,23 @@ typedef enum {
     MONTH_OCT, 
     MONTH_NOV,
     MONTH_DEC, 
-} MONTH; 
+} MONTH;
 
+typedef struct _TIMER_
+{
+    uint8 ucHour;
+    uint8 ucMin;
+    uint8 ucSec;
+    uint8 ucDay;
+    uint8 ucMonthValue;
+    uint16 unYear;
+}TIMER;
 
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
 uint8 AppTimerGetMonthValue(uint8*);
-bool AppTimerDisplay(uint8* , uint8 , uint8);
+bool AppTimerDisplay(uint8*, uint8, uint8);
 
 //*********************** Inline Method Implementations ***********************
 

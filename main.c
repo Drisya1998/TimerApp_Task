@@ -1,7 +1,7 @@
-//*******************************main***********************************
+//*******************************main******************************************
 //Copyright (c) 2025 Trenser Technology Solutions
 //All Rights Reserved
-//**********************************************************************
+//*****************************************************************************
 //
 //File     : main.c
 //Summary  : Call the DisplayGMT , DisplayIST , DisplayPST functions 
@@ -15,7 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "appTimer/appTimer.h"
+#include "appTimer.h"
+#include "common.h"
 
 //*********************Local Types*********************************************
 
@@ -30,39 +31,42 @@
             //AppTimerDisplayPST functions
 //Inputs  : None
 //Outputs : None 
-//Return  : ZERO
+//Return  : 0 - exit success- send status code to OS
 //Notes   : None 
 //*****************************************************************************
-uint8 main()
+int main()
 {
     while(TRUE)
     {
-        //clear the screen
-        printf("\x1b[H");
-
         bool blResult = FALSE;
 
-        blResult = AppTimerDisplay("GMT",GMT_HOURS , GMT_MINUTES);
+        clearConsole();
+        blResult = AppTimerDisplay(GMT, GMT_HOURS, GMT_MINUTES);
         if(blResult ==  FALSE)
         {
-            printf("Invalid Input detected");
+            printf("Displaying the time in GMT failed");
         }
 
-        blResult = AppTimerDisplay("IST",IST_HOURS , IST_MINUTES);
+        blResult = AppTimerDisplay(IST, IST_HOURS, IST_MINUTES);
         if(blResult ==  FALSE)
         {
-            printf("Invalid Input detected");
+            printf("Displaying the time in IST failed");
         }
 
-        blResult = AppTimerDisplay("PST",PST_HOURS , PST_MINUTES);
+        blResult = AppTimerDisplay(PST, PST_HOURS, PST_MINUTES);
         if(blResult ==  FALSE)
         {
-            printf("Invalid Input detected");
+            printf("Displaying the time in PST failed");
         }
-        
     }
 
-    return ZERO;
+    return 0;
+}
+
+void clearConsole()
+{
+    //clear the screen
+    printf(CLEAR_SCREEN);
 }
 
 //EOF
