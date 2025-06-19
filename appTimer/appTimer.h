@@ -53,6 +53,7 @@ typedef struct _TIMER_
 bool AppTimerGetMonthValue(uint8*, uint8*);
 bool AppTimerDisplay(uint8*, uint8, uint8);
 void AppTimerConvertToHourFormat(uint8*, uint8*);
+void AppTimerPrintToConsole(uint8*, uint8*, uint8* , time_t);
 //*********************** Inline Method Implementations ***********************
 
 #endif // _APP_TIMER_H_ 

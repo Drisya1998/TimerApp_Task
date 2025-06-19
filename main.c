@@ -41,19 +41,22 @@ int main()
     while(TRUE)
     {
         clearConsole();
-        blResult = AppTimerDisplay((unsigned char*)GMT, GMT_HOURS, GMT_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)GMT, GMT_HOURS, 
+                                            GMT_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in GMT failed");
         }
 
-        blResult = AppTimerDisplay((unsigned char*)IST, IST_HOURS, IST_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)IST, IST_HOURS, 
+                                            IST_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in IST failed");
         }
 
-        blResult = AppTimerDisplay((unsigned char*)PST, PST_HOURS, PST_MINUTES);
+        blResult = AppTimerDisplay((unsigned char*)PST, PST_HOURS, 
+                                        PST_MINUTES);
         if(blResult ==  FALSE)
         {
             printf("Displaying the time in PST failed");

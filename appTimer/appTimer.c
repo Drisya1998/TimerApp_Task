@@ -30,9 +30,9 @@
 
 //*********************.AppTimerGetMonthValue.*********************************
 //Purpose : Get corresponding Month Value from month string 
-//Inputs  : string Month like Jun
-//Outputs : MonthValue
-//Return  : MonthValue
+//Inputs  : string Month like Jun and address of variable monthValue
+//Outputs : Update MonthValue
+//Return  : exit status success or Failure
 //Notes   : None 
 //*****************************************************************************
 bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
@@ -54,10 +54,10 @@ bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
     return blflag;
 }
 
-//*********************.AppTimerConvertToHourFormat.*********************************
+//*********************.AppTimerConvertToHourFormat.***************************
 //Purpose : Convert the 24 Hour format to 12 Hour Format and set AM/PM 
 //Inputs  : 24 format Hour and AmPm Array that stores "AM" or "PM"
-//Outputs : None
+//Outputs : Hour Update in 12-Hour Format, ampm array update 
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
@@ -86,10 +86,10 @@ void AppTimerConvertToHourFormat(uint8* pucHour, uint8* pucAmPm)
     return;
 }
 
-//*********************.AppTimerPrintToConsole.*********************************
+//*********************.AppTimerPrintToConsole.********************************
 //Purpose : Print to Console int the format given in requirement 
 //Inputs  : Zone- GMT or IST or PST
-//Outputs : None
+//Outputs : Print to the console Time and Date of GMT , IST , PST
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
@@ -172,7 +172,7 @@ bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
                         sttimer.ucHour,sttimer.ucMin,sttimer.ucSec,pucAmPm); 
 
         blreturnflag = AppTimerGetMonthValue(pucMonth , &sttimer.ucMonthValue);
-        
+
         if(blreturnflag != FALSE){
             sprintf((char*)pucDate, "%02d/%02d/%d", \
                     sttimer.ucDay, sttimer.ucMonthValue, sttimer.unYear);
