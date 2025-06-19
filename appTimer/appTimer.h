@@ -28,6 +28,7 @@
 #define TRUE                1
 #define FALSE               0
 #define ZERO                0
+#define ONE                 1
 #define GMT_HOURS           5
 #define GMT_MINUTES         30
 #define PST_HOURS           12
@@ -37,6 +38,7 @@
 #define SECONDS_HOUR        3600
 #define AM                  "AM"
 #define PM                  "PM"
+#define NUMBER_MONTHS       12
 
 typedef struct _TIMER_
 {

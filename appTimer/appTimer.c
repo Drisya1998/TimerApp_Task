@@ -43,9 +43,10 @@ bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     if(pucmonth != NULL )
     {
-        for (int i = 0; i < 12; ++i) {
-            if (strcmp((const char*)pucmonth, (char*)pucmonth_names[i]) == 0) {
-                *pucMonthValue =i+1;
+        for(int i = ZERO; i < NUMBER_MONTHS; ++i)
+        {
+            if(strcmp((const char*)pucmonth, (char*)pucmonth_names[i]) == ZERO){
+                *pucMonthValue =i+ONE;
             }
         }
         blflag = TRUE;
@@ -169,11 +170,10 @@ bool AppTimerDisplay(uint8* pzone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
         AppTimerConvertToHourFormat(&sttimer.ucHour , pucAmPm);
 
         sprintf((char*)pucTimePart,"%02d:%02d:%02d %s" , \
-                        sttimer.ucHour,sttimer.ucMin,sttimer.ucSec,pucAmPm); 
+                        sttimer.ucHour,sttimer.ucMin,sttimer.ucSec,pucAmPm);
 
-        blreturnflag = AppTimerGetMonthValue(pucMonth , &sttimer.ucMonthValue);
-
-        if(blreturnflag != FALSE){
+        if(AppTimerGetMonthValue(pucMonth , &sttimer.ucMonthValue))
+        {
             sprintf((char*)pucDate, "%02d/%02d/%d", \
                     sttimer.ucDay, sttimer.ucMonthValue, sttimer.unYear);
         }

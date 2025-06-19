@@ -38,6 +38,9 @@
 int main()
 {
     bool blResult = FALSE;
+
+    (void)blResult;
+    
     while(TRUE)
     {
         clearConsole();
