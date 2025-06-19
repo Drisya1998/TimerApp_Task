@@ -122,7 +122,7 @@ void AppTimerPrintToConsole(uint8* pzone, uint8* pucTimePart, uint8* pucDate,
     return;
 }
 
-//*********************.AppTimerDisplay.************************************
+//*********************.AppTimerDisplay.***************************************
 //Purpose : print GMT , IST  and PST zone time,date
 //Inputs  : uint8* string represents GMT , IST  or PST ,
 //          uint8 GmtHours or IstHours or PstHours  , 
