@@ -48,7 +48,7 @@ bool AppTimerGetMonthValue(uint8* pucmonth, uint8* pucMonthValue)
     {
         for(int i = ZERO; i < NUMBER_MONTHS; ++i)
         {
-            if(strcmp((const char*)pucmonth, (char*)pucmonth_names[i]) == ZERO){
+            if(strcmp((const char*)pucmonth,(char*)pucmonth_names[i]) == ZERO){
                 *pucMonthValue =i+ONE;
             }
         }

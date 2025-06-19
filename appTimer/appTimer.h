@@ -61,6 +61,7 @@ typedef struct _TIMER_
     uint8 ucMonthValue;
     uint16 unYear;
 }TIMER;
+
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
