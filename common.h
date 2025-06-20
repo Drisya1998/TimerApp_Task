@@ -18,17 +18,16 @@ typedef unsigned short uint16;
 typedef signed char int8;
 typedef unsigned char uint8;
 
-
 //***************************** Global Constants ******************************
-#define GMT                 "GMT"
-#define IST                 "IST"
-#define PST                 "PST"
 #define CLEAR_SCREEN        "\x1b[H"
+#define TRUE                1
+#define FALSE               0
+#define OK                  0
+#define ERROR               1
 
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-void clearConsole();
 
 //*********************** Inline Method Implementations ***********************
 

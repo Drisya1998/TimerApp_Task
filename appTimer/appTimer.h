@@ -20,15 +20,13 @@
 //***************************** Global Constants ******************************
 #define HOUR_12             12
 #define HOUR_24             24
+#define HOUR_ZERO           0
 #define MINUTES_60          60
 #define TIME_STR_LEN        20
 #define DATE_STR_LEN        20
 #define AM_PM_SIZE          3
 #define MONTH_SIZE          4
-#define TRUE                1
-#define FALSE               0
-#define ZERO                0
-#define ONE                 1
+//GMT,IST,PST Offset values-Hours,Minutes,Seconds ,AM or PM
 #define GMT_HOURS           5
 #define GMT_MINUTES         30
 #define PST_HOURS           12
@@ -38,6 +36,7 @@
 #define SECONDS_HOUR        3600
 #define AM                  "AM"
 #define PM                  "PM"
+//Number of Months and Months in strings
 #define NUMBER_MONTHS       12
 #define JAN                 "Jan"
 #define FEB                 "Feb"
@@ -51,6 +50,10 @@
 #define OCT                 "Oct"
 #define NOV                 "Nov"
 #define DEC                 "Dec"
+//Zone Strings
+#define GMT                 "GMT"
+#define IST                 "IST"
+#define PST                 "PST"
 
 typedef struct _TIMER_
 {
@@ -61,14 +64,11 @@ typedef struct _TIMER_
     uint8 ucMonthValue;
     uint16 unYear;
 }TIMER;
-
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-bool AppTimerGetMonthValue(uint8*, uint8*);
 bool AppTimerDisplay(uint8*, uint8, uint8);
-void AppTimerConvertToHourFormat(uint8*, uint8*);
-void AppTimerPrintToConsole(uint8*, uint8*, uint8* , time_t);
+
 //*********************** Inline Method Implementations ***********************
 
 #endif // _APP_TIMER_H_ 

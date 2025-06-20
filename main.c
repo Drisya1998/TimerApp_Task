@@ -26,10 +26,11 @@
 //*********************Local Variables*****************************************
 
 //*********************Local Functions*****************************************
+static void clearConsole();
 
 //*********************.main.**************************************************
-//Purpose : Call the AppTimerDisplayGMT , AppTimerDisplayIST , 
-//          AppTimerDisplayPST functions
+//Purpose : Call the Functions AppTimerDisplay for GMT,AppTimerDisplay for IST, 
+//          AppTimerDisplay for PST
 //Inputs  : None
 //Outputs : None 
 //Return  : 0 - exit success- send status code to OS
@@ -39,8 +40,9 @@ int main()
 {
     bool blResult = FALSE;
 
+    //To avoid static analysis violations
     (void)blResult;
-    
+
     while(TRUE)
     {
         clearConsole();
@@ -69,7 +71,14 @@ int main()
     return 0;
 }
 
-void clearConsole()
+//*********************.main.**************************************************
+//Purpose : clear the console
+//Inputs  : None
+//Outputs : None 
+//Return  : None
+//Notes   : None 
+//*****************************************************************************
+static void clearConsole()
 {
     //clear the screen
     printf(CLEAR_SCREEN);
