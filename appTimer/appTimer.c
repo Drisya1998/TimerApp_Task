@@ -52,6 +52,9 @@ static bool AppTimerGetMonthValue(uint8* pucMonth, uint8* pucMonthValue)
     bool blFlag = FALSE;
     uint8 ucIndex = 0;
 
+    //To avoid static Analysis violations
+    (void)ucIndex;
+
     if((pucMonth != NULL) && (pucMonthValue != NULL))
     {
         for(ucIndex = 0; ucIndex < NUMBER_MONTHS; ++ucIndex)
