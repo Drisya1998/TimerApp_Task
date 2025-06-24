@@ -151,7 +151,7 @@ static bool AppTimerPrintToConsole(uint8* pZone, uint8* pucTimePart,
 
         if(strcmp((char*)pZone, GMT) == OK)
         {
-            printf("epoch:%ld\n", llEpochTime);
+            printf("epoch:%ld\n", (long)llEpochTime);
         }
 
         printf("\n\n");
