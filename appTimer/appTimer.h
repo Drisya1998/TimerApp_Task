@@ -33,6 +33,8 @@
 #define PST_MINUTES         30
 #define IST_HOURS           0
 #define IST_MINUTES         0
+#define PST_HOURS_DIFF      -8
+#define PST_MINUTES_DIFF    0
 #define SECONDS_HOUR        3600
 #define AM                  "AM"
 #define PM                  "PM"
@@ -67,7 +69,7 @@ typedef struct _TIMER_
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-bool AppTimerDisplay(uint8*, uint8, uint8);
+bool AppTimerDisplay();
 
 //*********************** Inline Method Implementations ***********************
 

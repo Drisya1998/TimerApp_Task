@@ -1,29 +1,38 @@
-//**************************** simulateLED ************************************
+//**************************** LED ********************************************
 // Copyright (c) 2025 Trenser Technology Solutions
 // All Rights Reserved 
 //***************************************************************************** 
 // 
-// Summary : simulate LED header File
-// Note    : Added simulateLED function decalaration
+// Summary : LED header File - Supprting LED operations.
+// Note    : 
 //
 //*****************************************************************************
 
-#ifndef _SIMULATE_LED_H_ 
-#define _SIMULATE_LED_H_ 
+#ifndef _LED_H_ 
+#define _LED_H_ 
 
 //******************************* Include Files *******************************
 
 //******************************* Global Types ********************************
 
 //***************************** Global Constants ******************************
+#define GPIO_DEVICE             "/dev/gpiochip0"
+#define LED_CONSUMER_NAME       "led_blink"
+#define GPIO_LINE               17
+#define GPIO_STATE_HIGH         1
+#define GPIO_STATE_LOW          0
+#define DELAY_ON_MS             840000
+#define DELAY_OFF_MS            532000
 
 //***************************** Global Variables ******************************
 
 //***************************** Function Declaration **************************
-void SimulateLEDDisplay();
+bool LEDBlink();
+bool LEDInit();
+void LEDDeInit();
 
 //*********************** Inline Method Implementations ***********************
 
-#endif // _SIMULATE_LED_H_ 
+#endif // _LED_H_ 
 
 // EOF

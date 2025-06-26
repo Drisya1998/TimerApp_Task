@@ -4,8 +4,8 @@
 //*****************************************************************************
 //
 //File     : appTimer.c
-//Summary  : Implementations for calculating and displaying time in GMT, PST 
-//           and IST
+//Summary  : Implementations for calculating and displaying time in different 
+//           zones GMT, PST and IST
 //Note     : None
 //Author   : Drisya P
 //Date     : 18/Jun/2025
@@ -37,11 +37,13 @@ static const int8* const pucMonthNames[NUMBER_MONTHS] =
 static bool AppTimerGetMonthValue(uint8*, uint8*);
 static bool AppTimerConvertToHourFormat(uint8*, uint8*);
 static bool AppTimerPrintToConsole(uint8*, uint8*, uint8*, time_t);
+static bool AppTimerPrintZone(int8*, int8, uint8);
+static bool AppTimerZoneTimeDisplay(uint8*, uint8, uint8);
 
 //*********************.AppTimerGetMonthValue.*********************************
 //Purpose : Get corresponding Month Value from month string 
 //Inputs  : Month - Month in string like Jun 
-//          pucMonthValue - address of variable ucMonthValue
+//Inputs  : pucMonthValue - address of variable ucMonthValue
 //Outputs : Update MonthValue corresponds to the string Month
 //Return  : TRUE - exit status success
 //          FALSE - Failure
@@ -74,9 +76,9 @@ static bool AppTimerGetMonthValue(uint8* pucMonth, uint8* pucMonthValue)
 //*********************.AppTimerConvertToHourFormat.***************************
 //Purpose : Convert the 24 Hour format to 12 Hour Format and set AM/PM 
 //Inputs  : pucHour - address of 24 format Hour
-//          pucAmPm - AmPm Array that stores "AM" or "PM"
+//Inputs  : pucAmPm - AmPm Array that stores "AM" or "PM"
 //Outputs : pucHour - Hour Update in 12-Hour Format, 
-//          pucAmPm - ampm array update with "AM" or "PM"
+//Outputs : pucAmPm - ampm array update with "AM" or "PM"
 //Return  : TRUE - exit status success
 //          FALSE - Failure
 //Notes   : None 
@@ -112,16 +114,41 @@ static bool AppTimerConvertToHourFormat(uint8* pucHour, uint8* pucAmPm)
     return blFlag;
 }
 
+//*********************.AppTimerPrintZone.*************************************
+//Purpose : Print to Console the Zone Name and details
+//Inputs  : pZone- GMT or IST or PST
+//Inputs  : ucZoneHour - Hours to display related to the Zone
+//Inputs  : ucZoneMinutes - Minutes to display related to the Zone 
+//Outputs : print the Zone name to the console
+//Return  : TRUE - exit status success
+//          FALSE - Failure
+//Notes   : None 
+//*****************************************************************************
+static bool AppTimerPrintZone(int8 *pZoneName, int8 ucZoneHour, \
+                                uint8 ucZoneMinutes)
+{
+    bool blFlag = FALSE;
+
+    if(pZoneName != NULL)
+    {
+        printf("\n%s (%d:%02d)\n--------------------\n",pZoneName, ucZoneHour,\
+                                    ucZoneMinutes);
+        blFlag = TRUE;
+    }
+
+    return blFlag;
+}
+
 //*********************.AppTimerPrintToConsole.********************************
 //Purpose : Print to Console int the format given in requirement 
 //Inputs  : pZone- GMT or IST or PST
-//          pucTimerPart - time string HH:MM:SS
-//          pucDate - Date string DD/MM/YYYY
-//          time_t llEpoxhTime - epochtime
+//Inputs  : pucTimerPart - time string HH:MM:SS
+//Inputs  : pucDate - Date string DD/MM/YYYY
+//Inputs  : time_t llEpoxhTime - epochtime
 //Outputs : Print to the console Time and Date of GMT , IST , PST
-//          pucTimerPart - time string HH:MM:SS
-//          pucDate - Date string DD/MM/YYYY
-//          llEpoxhTime - epochtime 
+//Outputs : pucTimerPart - time string HH:MM:SS
+//Outputs : pucDate - Date string DD/MM/YYYY
+//Outputs : llEpoxhTime - epochtime 
 //Return  : TRUE - exit status success
 //          FALSE - Failure
 //Notes   : None 
@@ -135,15 +162,16 @@ static bool AppTimerPrintToConsole(uint8* pZone, uint8* pucTimePart,
     {
         if(strcmp((char*)pZone, GMT) == OK)
         {
-            printf("\n\n\nUTC (0:00)\n-----------------\n");
+            blFlag = AppTimerPrintZone((int8*)GMT, IST_HOURS, IST_MINUTES);
         }
         else if(strcmp((char*)pZone, IST) == OK)
         {
-            printf("IST (5:30)\n-----------------\n");
+            blFlag = AppTimerPrintZone((int8*)IST, GMT_HOURS, GMT_MINUTES);
         }
         else
         {
-            printf("PST (-8:00)\n-----------------\n");
+            blFlag = AppTimerPrintZone((int8*)PST, PST_HOURS_DIFF, \
+                                            PST_MINUTES_DIFF);
         }
 
         printf("Time: %s\n", pucTimePart);
@@ -155,23 +183,23 @@ static bool AppTimerPrintToConsole(uint8* pZone, uint8* pucTimePart,
         }
 
         printf("\n\n");
-        blFlag = TRUE;
     }
 
     return blFlag;
 }
 
-//*********************.AppTimerDisplay.***************************************
+//*********************.AppTimerZoneTimeDisplay.*******************************
 //Purpose : print GMT , IST  and PST zone time,date
 //Inputs  : pZone - string represents GMT , IST  or PST ,
-//          ucOffsetHours- GmtOffsetHours,IstOffsetHours,PstOffsetHours 
-//          ucOffsetMinutes- GmtMinutes or IstMinutes or PstMinutes
+//inputs  : ucOffsetHours- GmtOffsetHours,IstOffsetHours,PstOffsetHours 
+//Inputs  : ucOffsetMinutes- GmtMinutes or IstMinutes or PstMinutes
 //Outputs : None
 //Return  : TRUE - exit status success
 //          FALSE - Failure
 //Notes   : None 
 //***************************************************************************** 
-bool AppTimerDisplay(uint8* pZone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
+static bool AppTimerZoneTimeDisplay(uint8* pZone, uint8 ucOffsetHours, \
+                                        uint8 ucOffsetMinutes)
 {
     bool blFlag = FALSE;
     uint8 pucDate[DATE_STR_LEN] = {0}; 
@@ -224,6 +252,42 @@ bool AppTimerDisplay(uint8* pZone, uint8 ucOffsetHours, uint8 ucOffsetMinutes)
     }
 
     return blFlag;
+}
+
+//*********************.AppTimerDisplay.***************************************
+//Purpose : Print to Console int the format given in requirement 
+//Inputs  : None
+//Outputs : Print to the console if Display Time is failed.
+//Return  : TRUE - exit status success
+//          FALSE - Failure
+//Notes   : None 
+//*****************************************************************************
+bool AppTimerDisplay()
+{
+    bool blResult = FALSE;
+
+    blResult = AppTimerZoneTimeDisplay((unsigned char*)GMT, GMT_HOURS, 
+                                            GMT_MINUTES);
+    if(blResult ==  FALSE)
+    {
+        printf("Displaying the time in GMT failed");
+    }
+
+    blResult = AppTimerZoneTimeDisplay((unsigned char*)IST, IST_HOURS, 
+                                            IST_MINUTES);
+    if(blResult ==  FALSE)
+    {
+        printf("Displaying the time in IST failed");
+    }
+
+    blResult = AppTimerZoneTimeDisplay((unsigned char*)PST, PST_HOURS, 
+                                        PST_MINUTES);
+    if(blResult ==  FALSE)
+    {
+        printf("Displaying the time in PST failed");
+    }
+
+    return blResult;
 }
 
 //EOF

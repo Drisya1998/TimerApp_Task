@@ -3,3 +3,5 @@
 *.o
 *.i
 *.s
+build/*
+release/*
