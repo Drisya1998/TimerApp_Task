@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "appTimer.h"
+#include "simulateLED.h"
 #include "common.h"
 
 //*********************Local Types*********************************************
@@ -26,7 +28,7 @@
 //*********************Local Variables*****************************************
 
 //*********************Local Functions*****************************************
-static void clearConsole();
+static void ClearConsole();
 
 //*********************.main.**************************************************
 //Purpose : Call the Functions AppTimerDisplay for GMT,AppTimerDisplay for IST, 
@@ -45,7 +47,7 @@ int main()
 
     while(TRUE)
     {
-        clearConsole();
+        ClearConsole();
         blResult = AppTimerDisplay((unsigned char*)GMT, GMT_HOURS, 
                                             GMT_MINUTES);
         if(blResult ==  FALSE)
@@ -66,19 +68,21 @@ int main()
         {
             printf("Displaying the time in PST failed");
         }
+
+        SimulateLEDDisplay();
     }
 
     return 0;
 }
 
-//*********************.main.**************************************************
+//*********************.ClearConsole.******************************************
 //Purpose : clear the console
 //Inputs  : None
 //Outputs : None 
 //Return  : None
 //Notes   : None 
 //*****************************************************************************
-static void clearConsole()
+static void ClearConsole()
 {
     //clear the screen
     printf(CLEAR_SCREEN);
