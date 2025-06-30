@@ -124,7 +124,7 @@ static bool AppTimerConvertToHourFormat(uint8* pucHour, uint8* pucAmPm)
 //          FALSE - Failure
 //Notes   : None 
 //*****************************************************************************
-static bool AppTimerPrintZone(int8 *pZoneName, int8 ucZoneHour, \
+static bool AppTimerPrintZone(int8* pZoneName, int8 ucZoneHour, \
                                 uint8 ucZoneMinutes)
 {
     bool blFlag = FALSE;

@@ -14,6 +14,7 @@ FLAGS = -Wall -Wextra -I. -I./appTimer -I./LED
 RPI_CFLAGS = -I/opt/gpiod-v1-arm/include -D_RPIBOARD
 RPI_LFLAGS = -L/opt/gpiod-v1-arm/lib -Wl,-rpath=/opt/gpiod-v1-arm/lib -lgpiod
 DEBUG_FLAGS = -g
+LINKER_FLAGS = -Wl,-Map=output.map
 
 SOURCES = main appTimer/appTimer LED/LED
 
@@ -38,7 +39,7 @@ rpi: dirs
 
 debug:
 	@mkdir -p $(DEBUG_DIR)
-	$(CC) $(FLAGS) $(DEBUG_FLAGS) $(APP_SRC) -o $(EXEC_DEBUG)
+	$(CC) $(FLAGS) $(DEBUG_FLAGS) $(LINKER_FLAGS) $(APP_SRC) -o $(EXEC_DEBUG)
 
 clean:
 	rm -rf $(RELEASE_DIR) $(DEBUG_DIR)

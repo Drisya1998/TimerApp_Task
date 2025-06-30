@@ -52,23 +52,13 @@ bool LEDInit()
 
     if ((stLine == NULL) || (stChip == NULL))
     {
-        if(!LEDGPIOConnect())
+        if(LEDGPIOConnect())
         {
-            sblLEDFlag = FALSE;
-        }
-        else
-        {
-            sblLEDFlag = TRUE;
-        }
-
-        if(gpiod_line_request_output(stLine, LED_CONSUMER_NAME, \
+            if(gpiod_line_request_output(stLine, LED_CONSUMER_NAME, \
                                         GPIO_STATE_LOW) != OK)
-        {
-            sblLEDFlag = FALSE;
-        }
-        else
-        {
-            sblLEDFlag = TRUE;
+            {
+                sblLEDFlag = TRUE;
+            }
         }
     }
 
@@ -108,6 +98,7 @@ void LEDDeInit()
 static bool LEDGPIOConnect()
 {
     bool blConnectFlag = FALSE;
+
     stChip = gpiod_chip_open(GPIO_DEVICE);
 
     if(stChip != NULL)
