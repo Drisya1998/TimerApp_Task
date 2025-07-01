@@ -5,6 +5,7 @@
 //
 //File     : LED.c
 //Summary  : LED simulation - print infinite LED ON and LED OFF in the console 
+//           and LED blinking on Raspberry Pi.
 //Note     : None
 //Author   : Drisya P
 //Date     : 24/Jun/2025
