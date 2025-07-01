@@ -56,7 +56,7 @@ bool LEDInit()
         if(LEDGPIOConnect())
         {
             if(gpiod_line_request_output(stLine, LED_CONSUMER_NAME, \
-                                        GPIO_STATE_LOW) != OK)
+                                        GPIO_STATE_LOW) == OK)
             {
                 sblLEDFlag = TRUE;
             }
