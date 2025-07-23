@@ -1,4 +1,4 @@
-CC = gcc
+CC ?= gcc
 CROSS_CC = aarch64-linux-gnu-gcc
 SRC_DIR =.
 APP_SRC = $(SRC_DIR)/main.c appTimer/appTimer.c simulateLED/simulateLED.c
