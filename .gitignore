@@ -3,3 +3,9 @@
 *.o
 *.i
 *.s
+*.map
+*.log
+build/*
+release/*
+debug/*
+build_rpi/*

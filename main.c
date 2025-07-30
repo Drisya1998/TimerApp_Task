@@ -4,8 +4,9 @@
 //*****************************************************************************
 //
 //File     : main.c
-//Summary  : Call the functionsfor DisplayGMT , DisplayIST , DisplayPST,
-//           clear the console 
+//Summary  : Infinitely Display time of different Zones GMT , IST and PST by 
+//           clear the console every second and LED simulation for Linux and 
+//           LED Blinking in Raspberry Pi
 //Note     : None
 //Author   : Drisya P
 //Date     : 17/Jun/2025
@@ -18,7 +19,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "appTimer.h"
-#include "simulateLED.h"
+#include "LED.h"
 #include "common.h"
 
 //*********************Local Types*********************************************
@@ -31,8 +32,9 @@
 static void ClearConsole();
 
 //*********************.main.**************************************************
-//Purpose : Call the Functions AppTimerDisplay for GMT,AppTimerDisplay for IST, 
-//          AppTimerDisplay for PST
+//Purpose : Infinitely Display time of different Zones GMT , IST and PST by 
+//          clear the console every second and LED simulation for Linux and 
+//          LED Blinking in Raspberry Pi
 //Inputs  : None
 //Outputs : None 
 //Return  : 0 - exit success- send status code to OS
@@ -45,32 +47,41 @@ int main()
     //To avoid static analysis violations
     (void)blResult;
 
+    #ifdef _RPIBOARD
+    blResult = LEDInit();
+
+    if(blResult == FALSE)
+    {
+        printf("RPI Initialization Failed\n\n");
+    }
+
+    #endif /*_RPIBOARD*/
+
     while(TRUE)
     {
         ClearConsole();
-        blResult = AppTimerDisplay((unsigned char*)GMT, GMT_HOURS, 
-                                            GMT_MINUTES);
+        blResult = AppTimerDisplay();
+
         if(blResult ==  FALSE)
         {
-            printf("Displaying the time in GMT failed");
+            printf("Displaying the time failed\n");
         }
 
-        blResult = AppTimerDisplay((unsigned char*)IST, IST_HOURS, 
-                                            IST_MINUTES);
-        if(blResult ==  FALSE)
+        blResult = LEDBlink();
+
+        if(blResult == FALSE)
         {
-            printf("Displaying the time in IST failed");
+            printf("\nLED Blinking Failed\n");
         }
-
-        blResult = AppTimerDisplay((unsigned char*)PST, PST_HOURS, 
-                                        PST_MINUTES);
-        if(blResult ==  FALSE)
+        else
         {
-            printf("Displaying the time in PST failed");
+            printf("\nLED Blinking\n");
         }
-
-        SimulateLEDDisplay();
     }
+
+    #ifdef _RPIBOARD
+    LEDDeInit();
+    #endif /*_RPIBOARD*/
 
     return 0;
 }
